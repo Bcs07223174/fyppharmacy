@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { firestoreService, Medicine, Bill } from "@/lib/firestoreService";
+import { useCurrency } from "@/lib/currencyContext";
 import {
   exportMedicinesCSV,
   exportMedicinesPrint,
@@ -16,6 +17,7 @@ import {
 import { Download, Printer, Trash2, RefreshCw, Database, HardDrive } from "lucide-react";
 
 export default function DataManagementPage() {
+  const { currency } = useCurrency();
   const [medicines, setMedicines] = useState<Medicine[]>([]);
   const [bills, setBills] = useState<Bill[]>([]);
   const [loading, setLoading] = useState(true);
@@ -69,7 +71,7 @@ export default function DataManagementPage() {
   };
 
   const handlePrintMedicines = () => {
-    exportMedicinesPrint(medicines);
+    exportMedicinesPrint(medicines, currency);
   };
 
   const handleExportBillsCSV = () => {

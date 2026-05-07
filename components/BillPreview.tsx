@@ -1,6 +1,7 @@
 "use client";
 
 import { Bill } from "@/lib/firestoreService";
+import { useCurrency } from "@/lib/currencyContext";
 import { X } from "lucide-react";
 import { useRef } from "react";
 
@@ -11,6 +12,7 @@ interface BillPreviewProps {
 }
 
 export default function BillPreview({ bill, isOpen, onClose }: BillPreviewProps) {
+  const { formatAmount } = useCurrency();
   const printRef = useRef<HTMLDivElement>(null);
 
   if (!isOpen) return null;
@@ -117,13 +119,13 @@ export default function BillPreview({ bill, isOpen, onClose }: BillPreviewProps)
                       {item.quantity}
                     </td>
                     <td className="text-right text-sm text-gray-900 py-3">
-                      ₹{item.price.toFixed(2)}
+                      {formatAmount(item.price)}
                     </td>
                     <td className="text-right text-sm text-gray-900 py-3">
-                      ₹{item.discount.toFixed(2)}
+                      {formatAmount(item.discount)}
                     </td>
                     <td className="text-right text-sm font-semibold text-gray-900 py-3">
-                      ₹{item.total.toFixed(2)}
+                      {formatAmount(item.total)}
                     </td>
                   </tr>
                 ))}
@@ -136,15 +138,15 @@ export default function BillPreview({ bill, isOpen, onClose }: BillPreviewProps)
             <div className="w-64">
               <div className="flex justify-between text-sm mb-2">
                 <span className="text-gray-600">Subtotal:</span>
-                <span className="text-gray-900">₹{bill.subtotal.toFixed(2)}</span>
+                <span className="text-gray-900">{formatAmount(bill.subtotal)}</span>
               </div>
               <div className="flex justify-between text-sm mb-3 pb-3 border-b-2 border-gray-300">
                 <span className="text-gray-600">Tax (5%):</span>
-                <span className="text-gray-900">₹{bill.tax.toFixed(2)}</span>
+                <span className="text-gray-900">{formatAmount(bill.tax)}</span>
               </div>
               <div className="flex justify-between text-lg font-bold">
                 <span className="text-gray-900">Total Amount:</span>
-                <span className="text-gray-900">₹{bill.total.toFixed(2)}</span>
+                <span className="text-gray-900">{formatAmount(bill.total)}</span>
               </div>
             </div>
           </div>

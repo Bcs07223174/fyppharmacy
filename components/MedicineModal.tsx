@@ -5,6 +5,7 @@ import { Medicine, firestoreService } from "@/lib/firestoreService";
 import { DataSyncService } from "@/lib/dataSync";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useCurrency } from "@/lib/currencyContext";
 import { X } from "lucide-react";
 
 interface MedicineModalProps {
@@ -23,6 +24,7 @@ export default function MedicineModal({
   onClose,
   onSave,
 }: MedicineModalProps) {
+  const { currencySymbol } = useCurrency();
   const [formData, setFormData] = useState<Medicine>({
     name: "",
     genericName: "",
@@ -325,7 +327,7 @@ export default function MedicineModal({
             {/* Cost Price */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Cost Price (₹)
+                Cost Price ({currencySymbol})
               </label>
               <Input
                 type="number"
@@ -344,7 +346,7 @@ export default function MedicineModal({
             {/* Selling Price */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Selling Price (₹) *
+                Selling Price ({currencySymbol}) *
               </label>
               <Input
                 type="number"

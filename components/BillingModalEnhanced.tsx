@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { firestoreService, Medicine } from "@/lib/firestoreService";
+import { useCurrency } from "@/lib/currencyContext";
 import { Search, X, Plus, Minus } from "lucide-react";
 
 interface BillItem {
@@ -36,6 +37,7 @@ export default function BillingModalEnhanced({
   onClose,
   onSave,
 }: BillingModalEnhancedProps) {
+  const { formatAmount, currencySymbol } = useCurrency();
   const [medicines, setMedicines] = useState<Medicine[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [cartItems, setCartItems] = useState<BillItem[]>([]);
@@ -258,8 +260,7 @@ export default function BillingModalEnhanced({
                           </p>
 
                           <p className="text-xs text-gray-500">
-                            Stock: {medicine.currentStock || 0} | Price: ₹
-                            {(medicine.sellingPrice || 0).toFixed(2)}
+                            Stock: {medicine.currentStock || 0} | Price: {formatAmount(medicine.sellingPrice || 0)}
                           </p>
                         </div>
 
@@ -305,8 +306,7 @@ export default function BillingModalEnhanced({
                       </p>
 
                       <p className="text-sm text-gray-700 mt-1">
-                        ₹{item.unitPrice.toFixed(2)} × {item.quantity} = ₹
-                        {item.total.toFixed(2)}
+                        {formatAmount(item.unitPrice)} × {item.quantity} = {formatAmount(item.total)}
                       </p>
                     </div>
 
@@ -359,13 +359,11 @@ export default function BillingModalEnhanced({
             <div className="space-y-3 bg-sky-50 p-4 rounded-lg border border-sky-200">
               <div className="flex justify-between text-sm">
                 <span className="text-gray-700">Subtotal:</span>
-                <span className="font-semibold text-gray-900">
-                  ₹{subtotal.toFixed(2)}
-                </span>
+                <span className="font-semibold text-gray-900">{formatAmount(subtotal)}</span>
               </div>
 
               <div className="flex justify-between items-center text-sm">
-                <span className="text-gray-700">Discount (₹):</span>
+                <span className="text-gray-700">Discount ({currencySymbol}):</span>
                 <Input
                   type="number"
                   min="0"
@@ -393,9 +391,7 @@ export default function BillingModalEnhanced({
 
               <div className="border-t border-sky-300 pt-3 flex justify-between">
                 <span className="font-bold text-gray-900">Grand Total:</span>
-                <span className="font-bold text-xl text-sky-600">
-                  ₹{grandTotal.toFixed(2)}
-                </span>
+                <span className="font-bold text-xl text-sky-600">{formatAmount(grandTotal)}</span>
               </div>
             </div>
           )}

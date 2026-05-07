@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Pill, BarChart3, Users, Zap, Shield, Clock } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import CurrencySelector from '@/components/CurrencySelector';
 
 export default function LandingPage() {
   const router = useRouter();
@@ -57,6 +58,7 @@ export default function LandingPage() {
               <h1 className="text-2xl font-bold text-sky-900">Real Pharmacy</h1>
             </div>
             <div className="flex gap-4">
+              <CurrencySelector />
               <Button
                 onClick={() => router.push('/login')}
                 variant="outline"

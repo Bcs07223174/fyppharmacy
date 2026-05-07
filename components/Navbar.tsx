@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/authContext";
 import { Button } from "./ui/button";
 import { LogOut, User } from "lucide-react";
+import CurrencySelector from "./CurrencySelector";
 
 export default function Navbar() {
   const { userProfile, logout } = useAuth();
@@ -21,6 +22,7 @@ export default function Navbar() {
       </div>
 
       <div className="flex items-center gap-4">
+        <CurrencySelector />
         <div className="flex items-center gap-2 text-sky-100">
           <User className="w-5 h-5" />
           <span className="text-sm font-medium">{userProfile?.displayName || 'Pharmacist'}</span>

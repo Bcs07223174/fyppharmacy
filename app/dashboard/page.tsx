@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { Card } from "@/components/ui/card";
 import { firestoreService, Bill, Medicine } from "@/lib/firestoreService";
 import { TrendingUp, Package, ShoppingCart, AlertTriangle } from "lucide-react";
+import { useCurrency } from "@/lib/currencyContext";
 
 // Lazy load heavy components
 const ChartsContainer = dynamic(() => import("@/components/ChartsContainer"), {
@@ -13,6 +14,7 @@ const ChartsContainer = dynamic(() => import("@/components/ChartsContainer"), {
 });
 
 export default function DashboardPage() {
+  const { formatAmount } = useCurrency();
   const [loading, setLoading] = useState(true);
   const [totalRevenue, setTotalRevenue] = useState(0);
   const [totalSales, setTotalSales] = useState(0);
@@ -109,7 +111,7 @@ export default function DashboardPage() {
             <div>
               <p className="text-gray-600 text-sm font-medium">Total Revenue</p>
               <p className="text-2xl font-bold text-gray-900 mt-2">
-                ₹{totalRevenue.toFixed(2)}
+                {formatAmount(totalRevenue)}
               </p>
             </div>
             <TrendingUp className="w-12 h-12 text-blue-600 opacity-20" />

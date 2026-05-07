@@ -5,12 +5,14 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { firestoreService, Bill } from "@/lib/firestoreService";
+import { useCurrency } from "@/lib/currencyContext";
 import { Plus, Eye, Trash2, Printer, FileText } from "lucide-react";
 
 const BillingModalEnhanced = lazy(() => import("@/components/BillingModalEnhanced"));
 const BillPreview = lazy(() => import("@/components/BillPreview"));
 
 export default function BillingPage() {
+  const { formatAmount } = useCurrency();
   const [bills, setBills] = useState<Bill[]>([]);
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -177,7 +179,7 @@ export default function BillingPage() {
                     </div>
 
                     <div className="text-right mr-4">
-                      <p className="font-bold text-sky-600">₹{bill.grandTotal.toFixed(2)}</p>
+                      <p className="font-bold text-sky-600">{formatAmount(bill.grandTotal)}</p>
                       <p className="text-xs text-gray-500">{bill.items.length} items</p>
                     </div>
 
@@ -225,13 +227,13 @@ export default function BillingPage() {
                                       </tr>
                                     </thead>
                                     <tbody>
-                                      ${bill.items.map((item: any) => `<tr><td>${item.medicineName}</td><td>${item.quantity}</td><td>₹${item.unitPrice}</td><td>₹${item.total.toFixed(2)}</td></tr>`).join("")}
+                                      ${bill.items.map((item: any) => `<tr><td>${item.medicineName}</td><td>${item.quantity}</td><td>${formatAmount(item.unitPrice)}</td><td>${formatAmount(item.total)}</td></tr>`).join("")}
                                     </tbody>
                                   </table>
-                                  <div class="total">Subtotal: ₹${bill.subtotal.toFixed(2)}</div>
-                                  ${bill.discount > 0 ? `<div class="total">Discount: -₹${bill.discount.toFixed(2)}</div>` : ""}
-                                  ${bill.tax > 0 ? `<div class="total">Tax (${bill.tax}%): ₹${((bill.subtotal * bill.tax) / 100).toFixed(2)}</div>` : ""}
-                                  <div class="total" style="font-size: 18px; margin-top: 20px;">Grand Total: ₹${bill.grandTotal.toFixed(2)}</div>
+                                  <div class="total">Subtotal: ${formatAmount(bill.subtotal)}</div>
+                                  ${bill.discount > 0 ? `<div class="total">Discount: -${formatAmount(bill.discount)}</div>` : ""}
+                                  ${bill.tax > 0 ? `<div class="total">Tax (${bill.tax}%): ${formatAmount((bill.subtotal * bill.tax) / 100)}</div>` : ""}
+                                  <div class="total" style="font-size: 18px; margin-top: 20px;">Grand Total: ${formatAmount(bill.grandTotal)}</div>
                                 </body>
                               </html>
                             `);

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Bill, BillItem, firestoreService, Medicine } from "@/lib/firestoreService";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useCurrency } from "@/lib/currencyContext";
 import { X, Plus, Trash2 } from "lucide-react";
 
 interface BillingModalProps {
@@ -17,6 +18,7 @@ export default function BillingModal({
   onClose,
   onSave,
 }: BillingModalProps) {
+  const { formatAmount } = useCurrency();
   const [medicines, setMedicines] = useState<Medicine[]>([]);
   const [items, setItems] = useState<BillItem[]>([]);
   const [selectedMedicineId, setSelectedMedicineId] = useState("");
@@ -274,7 +276,7 @@ export default function BillingModal({
                           />
                         </td>
                         <td className="px-4 py-2 text-right text-sm text-gray-600">
-                          ₹{item.price.toFixed(2)}
+                          {formatAmount(item.price)}
                         </td>
                         <td className="px-4 py-2 text-right">
                           <Input
@@ -294,7 +296,7 @@ export default function BillingModal({
                           />
                         </td>
                         <td className="px-4 py-2 text-right text-sm font-semibold text-gray-900">
-                          ₹{item.total.toFixed(2)}
+                          {formatAmount(item.total)}
                         </td>
                         <td className="px-4 py-2 text-center">
                           <Button
@@ -318,15 +320,15 @@ export default function BillingModal({
           <div className="space-y-3 bg-gray-50 p-4 rounded-lg">
             <div className="flex justify-between text-sm">
               <span className="text-gray-600">Subtotal:</span>
-              <span className="font-medium text-gray-900">₹{subtotal.toFixed(2)}</span>
+              <span className="font-medium text-gray-900">{formatAmount(subtotal)}</span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-gray-600">Tax (5%):</span>
-              <span className="font-medium text-gray-900">₹{tax.toFixed(2)}</span>
+              <span className="font-medium text-gray-900">{formatAmount(tax)}</span>
             </div>
             <div className="border-t border-gray-200 pt-3 flex justify-between">
               <span className="text-gray-900 font-semibold">Total:</span>
-              <span className="text-lg font-bold text-gray-900">₹{total.toFixed(2)}</span>
+              <span className="text-lg font-bold text-gray-900">{formatAmount(total)}</span>
             </div>
           </div>
 

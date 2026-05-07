@@ -7,12 +7,14 @@ import { Input } from '@/components/ui/input';
 import { firestoreService, Medicine } from '@/lib/firestoreService';
 import { LocalStorageManager } from '@/lib/localStorage';
 import { CartManager } from '@/lib/cart';
+import { useCurrency } from '@/lib/currencyContext';
 import { Plus, Edit2, Trash2, Search, ShoppingCart, Eye, X } from 'lucide-react';
 import Link from 'next/link';
 
 const MedicineModal = lazy(() => import('@/components/MedicineModal'));
 
 export default function MedicinesPage() {
+  const { formatAmount } = useCurrency();
   const [medicines, setMedicines] = useState<Medicine[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(false);
@@ -225,8 +227,8 @@ export default function MedicinesPage() {
 
                   <div className="border-t border-sky-100 pt-3">
                     <div className="flex items-baseline gap-2">
-                      <span className="text-3xl font-bold text-sky-900">₹{medicine.sellingPrice}</span>
-                      <span className="text-sm text-sky-500 line-through">₹{medicine.costPrice}</span>
+                      <span className="text-3xl font-bold text-sky-900">{formatAmount(medicine.sellingPrice)}</span>
+                      <span className="text-sm text-sky-500 line-through">{formatAmount(medicine.costPrice)}</span>
                       <span className="text-xs font-semibold text-emerald-600 ml-auto">
                         {Math.round(((medicine.costPrice - medicine.sellingPrice) / medicine.costPrice) * 100)}% off
                       </span>

@@ -1,4 +1,5 @@
 import { Medicine, Bill } from './firestoreService';
+import { CurrencyCode, formatCurrency } from './currency';
 
 // Export medicines to CSV
 export function exportMedicinesCSV(medicines: Medicine[]): void {
@@ -25,7 +26,7 @@ export function exportMedicinesCSV(medicines: Medicine[]): void {
 }
 
 // Export medicines to printable table
-export function exportMedicinesPrint(medicines: Medicine[]): void {
+export function exportMedicinesPrint(medicines: Medicine[], currency: CurrencyCode = 'INR'): void {
   const headers = ['Name', 'Category', 'Type/Strength', 'Company', 'Expiry', 'Price', 'Stock'];
   
   let html = `
@@ -62,7 +63,7 @@ export function exportMedicinesPrint(medicines: Medicine[]): void {
                 <td>${med.strength || 'N/A'}</td>
                 <td>${med.company}</td>
                 <td>${med.expiryDate}</td>
-                <td>₹${med.sellingPrice.toFixed(2)}</td>
+                <td>${formatCurrency(med.sellingPrice, currency)}</td>
                 <td>${med.currentStock}</td>
               </tr>
             `).join('')}

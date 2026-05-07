@@ -5,10 +5,12 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { firestoreService, Bill, Medicine } from "@/lib/firestoreService";
+import { useCurrency } from "@/lib/currencyContext";
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 import { Download, Calendar } from "lucide-react";
 
 export default function ReportsPage() {
+  const { formatAmount } = useCurrency();
   const [loading, setLoading] = useState(false);
   const [bills, setBills] = useState<Bill[]>([]);
   const [medicines, setMedicines] = useState<Medicine[]>([]);
@@ -198,7 +200,7 @@ export default function ReportsPage() {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card className="p-6">
           <p className="text-gray-600 text-sm font-medium">Total Revenue</p>
-          <p className="text-2xl font-bold text-gray-900 mt-2">₹{totalRevenue.toFixed(2)}</p>
+          <p className="text-2xl font-bold text-gray-900 mt-2">{formatAmount(totalRevenue)}</p>
         </Card>
         <Card className="p-6">
           <p className="text-gray-600 text-sm font-medium">Total Bills</p>
@@ -206,7 +208,7 @@ export default function ReportsPage() {
         </Card>
         <Card className="p-6">
           <p className="text-gray-600 text-sm font-medium">Avg Bill Value</p>
-          <p className="text-2xl font-bold text-gray-900 mt-2">₹{avgBillValue.toFixed(2)}</p>
+          <p className="text-2xl font-bold text-gray-900 mt-2">{formatAmount(avgBillValue)}</p>
         </Card>
         <Card className="p-6">
           <p className="text-gray-600 text-sm font-medium">Total Medicines</p>
@@ -225,7 +227,7 @@ export default function ReportsPage() {
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="date" />
                 <YAxis />
-                <Tooltip />
+                <Tooltip formatter={(value) => formatAmount(Number(value))} />
                 <Line
                   type="monotone"
                   dataKey="amount"
@@ -248,7 +250,7 @@ export default function ReportsPage() {
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="month" />
                 <YAxis />
-                <Tooltip />
+                <Tooltip formatter={(value) => formatAmount(Number(value))} />
                 <Bar dataKey="amount" fill="#0088FE" />
               </BarChart>
             </ResponsiveContainer>
@@ -297,7 +299,7 @@ export default function ReportsPage() {
                   cx="50%"
                   cy="50%"
                   labelLine={false}
-                  label={({ name, value }) => `${name}: ₹${value}`}
+                  label={({ name, value }) => `${name}: ${formatAmount(Number(value))}`}
                   outerRadius={80}
                   fill="#8884d8"
                   dataKey="value"
@@ -306,7 +308,7 @@ export default function ReportsPage() {
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>
-                <Tooltip />
+                <Tooltip formatter={(value) => formatAmount(Number(value))} />
               </PieChart>
             </ResponsiveContainer>
           ) : (

@@ -6,10 +6,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { CartManager, CartItem } from '@/lib/cart';
 import { firestoreService } from '@/lib/firestoreService';
+import { useCurrency } from '@/lib/currencyContext';
 import { Trash2, Plus, Minus, ShoppingCart, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
 export default function CartPage() {
+  const { formatAmount } = useCurrency();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [customerName, setCustomerName] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('cash');
@@ -132,7 +134,7 @@ export default function CartPage() {
                         <p className="text-sm text-sky-600 mt-1">
                           {item.medicine.company} • {item.medicine.strength}
                         </p>
-                        <p className="text-2xl font-bold text-sky-900 mt-2">₹{item.medicine.sellingPrice}</p>
+                        <p className="text-2xl font-bold text-sky-900 mt-2">{formatAmount(item.medicine.sellingPrice)}</p>
                       </div>
 
                       <div className="flex items-center gap-3 bg-sky-50 rounded-lg p-2">
@@ -159,7 +161,7 @@ export default function CartPage() {
 
                       <div className="text-right min-w-32">
                         <p className="text-sm text-sky-600 mb-2">Subtotal</p>
-                        <p className="text-xl font-bold text-sky-900">₹{item.totalPrice.toFixed(2)}</p>
+                        <p className="text-xl font-bold text-sky-900">{formatAmount(item.totalPrice)}</p>
                       </div>
 
                       <button
@@ -228,21 +230,21 @@ export default function CartPage() {
                 <div className="border-t border-sky-100 pt-6 space-y-3">
                   <div className="flex justify-between text-sky-900">
                     <span>Subtotal</span>
-                    <span className="font-semibold">₹{subtotal.toFixed(2)}</span>
+                    <span className="font-semibold">{formatAmount(subtotal)}</span>
                   </div>
                   {discount > 0 && (
                     <div className="flex justify-between text-emerald-600">
                       <span>Discount ({discount}%)</span>
-                      <span className="font-semibold">-₹{discountAmount.toFixed(2)}</span>
+                      <span className="font-semibold">-{formatAmount(discountAmount)}</span>
                     </div>
                   )}
                   <div className="flex justify-between text-sky-900">
                     <span>Tax (18% GST)</span>
-                    <span className="font-semibold">₹{tax.toFixed(2)}</span>
+                    <span className="font-semibold">{formatAmount(tax)}</span>
                   </div>
                   <div className="flex justify-between text-xl font-bold text-sky-900 pt-3 border-t border-sky-100">
                     <span>Total</span>
-                    <span>₹{total.toFixed(2)}</span>
+                    <span>{formatAmount(total)}</span>
                   </div>
                 </div>
 
